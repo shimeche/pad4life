@@ -8,9 +8,9 @@
 	var lSourceStartAt, rSourceStartAt, 
 	lSourcePauseAt, rSourcePauseAt,
 	lSourcePaused, rSourcePaused;
+	var lAudio = new Audio(), rAudio = new Audio(), oAudio = new Audio();
 
 
-//control source 2
 
 
 	function toggleLSource1 (argument) {
@@ -21,29 +21,27 @@
 
 		}else if (!lSourceBufferName) {
 
-			lSourceBufferName = 'techno';
+			lSourceBufferName = 'a01';
 
 		}
 
 		if (!lPlaying) {
-			lSource = createSource(BUFFERS[lSourceBufferName]);
+			
+			if (!lSource) {
+				lAudio.src = "sounds/" + lSourceBufferName + ".wav";
+				lSource = createSourceFromAudio(lAudio);
+			}
+
 
 			// 如果有預設的設定值
 			if (lGainValue>0)
 				lSource.gainNode.gain.value = lGainValue;
 			if (lSpeedValue>0)
-				lSource.source.playbackRate.value = lSpeedValue;
+				lAudio.playbackRate = lSpeedValue;
 
-			lSourcePaused = false;
 
-		    if (lSourcePauseAt) {
-				lSourceStartAt = Date.now() - lSourcePauseAt;
-				lSource.source.start(0, lSourcePauseAt / 1000);
-		    }
-		    else {
-				lSourceStartAt = Date.now();
-				lSource.source.start(0);
-		    }
+			lAudio.play();
+
 
 			lPlaying = true;
 		}
@@ -51,18 +49,16 @@
 	}
 
 	function pauseSource1 (argument) {
-		lSource.source.stop(0);
-		lSourcePauseAt = Date.now() - lSourceStartAt;
-		lSourcePaused = true;
+		lAudio.pause();
+
 		lPlaying = false;
 	}
-
 	function stopSource1 (argument) {
-		if (lSource) {
-  			lSource.source.stop(0);
-  			lSourcePauseAt = 0;
-  			lPlaying = false;
-  		}
+
+		lAudio.pause();
+		lAudio.currentTime = 0;
+
+		lPlaying = false;
 	}
 	function changeSource1Volume (element) {
 
@@ -71,8 +67,15 @@
 	}
 	function changeSource1Speed (element) {
 
-		lSpeedValue = changeSpeed(element, lSource);
+		// lSpeedValue = changeSpeed(element, lSource);
+		lSpeedValue = changeAudioSpeed(element, lAudio);
 
+	}
+	function changeSource1Frequency (element) {
+		changeFrequency(element, lSource);
+	}
+	function changeSource1Quality (element) {
+		changeQuality(element, lSource);
 	}
 
 
@@ -86,68 +89,77 @@
 
 		}else if (!rSourceBufferName) {
 
-			rSourceBufferName = 'drums';
+			rSourceBufferName = 'b01';
 
 		}
 
 		if (!rPlaying) {
-			rSource = createSource(BUFFERS[rSourceBufferName]);
+			
+			if (!rSource) {
+				rAudio.src = "sounds/" + rSourceBufferName + ".wav";
+				rSource = createSourceFromAudio(rAudio);
+			}
 
+
+			// 如果有預設的設定值
 			if (rGainValue>0)
 				rSource.gainNode.gain.value = rGainValue;
-			if (rSpeedValue>0)	
-				rSource.source.playbackRate.value = rSpeedValue;
-			rSourcePaused = false;
+			if (rSpeedValue>0)
+				rAudio.playbackRate = rSpeedValue;
 
-		    if (rSourcePauseAt) {
-				rSourceStartAt = Date.now() - rSourcePauseAt;
-				rSource.source.start(0, rSourcePauseAt / 1000);
-		    }
-		    else {
-				rSourceStartAt = Date.now();
-				rSource.source.start(0);
-		    }
+
+			rAudio.play();
+
 
 			rPlaying = true;
 		}
+
 	}
 
 	function pauseSource2 (argument) {
-		rSource.source.stop(0);
-		rSourcePauseAt = Date.now() - rSourceStartAt;
-		rSourcePaused = true;
+		rAudio.pause();
+
 		rPlaying = false;
 	}
-
 	function stopSource2 (argument) {
-		if (rSource) {
-  			rSource.source.stop(0);
-  			rPlaying = false;
-  		};
+
+		rAudio.pause();
+		rAudio.currentTime = 0;
+
+		rPlaying = false;
 	}
-
-
 	function changeSource2Volume (element) {
 
 		rGainValue = changeVolume(element, rSource);
-		
-	};
 
-
+	}
 	function changeSource2Speed (element) {
 
-		rSpeedValue = changeSpeed(element, rSource);
+		// lSpeedValue = changeSpeed(element, lSource);
+		rSpeedValue = changeAudioSpeed(element, rAudio);
 
-	};
+	}
+	function changeSource2Frequency (element) {
+		changeFrequency(element, rSource);
+	}
+	function changeSource2Quality (element) {
+		changeQuality(element, rSource);
+	}
+
 
 
 //control other source
 
 	function toggleLSource3 (argument) {
 
-		OtherMusic = createSource(BUFFERS[argument], false);
+		oAudio.src = "sounds/" + argument + ".wav";
 
-		OtherMusic.source.start(0);
+		if (!OtherMusic) {
+			OtherMusic = createSourceFromAudio(oAudio, false);
+		}
+
+		// OtherMusic.source.start(0);
+		oAudio.play();
 
 	}
 
@@ -159,16 +171,27 @@
 
 
 	function changeSourceMusic (sid, element) {
-	    var s, ev;
+	    var ev, a;
 	    ev = element.value;
 
 	    if (sid==1) {
-	        s = lSource;
+	        a = lAudio;
 	        lSourceBufferName = ev;
+
 	    }else if(sid==2) {          
-	        s = rSource;
+	        a = rAudio;
 	        rSourceBufferName = ev;
 	    }
 
-	    changeSource(s, ev);
+	    // changeSource(s, ev);
+	    changeAudioSource(a, ev);
 	}
+
+	function syncLeftRightAudio()
+	{
+
+		rAudio.currentTime = lAudio.currentTime;
+
+
+	}
+

@@ -2,8 +2,6 @@
 <html>
 	<head>
 			<script src="init.js"></script>
-			<script src="buffer-loader.js"></script>
-			<script src="filter-sample.js"></script>
 			<script src="pad-4-life.js"></script>
 			<script src="pad-4-life-utils.js"></script>
 
@@ -23,14 +21,20 @@
 		<br />
 
 
+		Frequency: <input min="0" max="1" step="0.01" value="1" oninput="changeSource1Frequency(this);" type="range">
+		Quality: <input min="0" max="1" step="0.01" value="0" oninput="changeSource1Quality(this);" type="range">	
+		<br />
+
 		<!-- todo set 1x -->
-		<button onclick="changeSourceMusic(1, this)" value="drums">LMusic - Drums</button>
-		<button onclick="changeSourceMusic(1, this)" value="organ">LMusic - Organ</button>
+		<button onclick="changeSourceMusic(1, this)" value="blueyellow">LMusic - Drums</button>
+		<button onclick="changeSourceMusic(1, this)" value="organ-echo-chords">LMusic - Organ</button>
 		<button onclick="changeSourceMusic(1, this)" value="techno">LMusic - Techno</button>
 		<hr>
 		<p></p>
 		<div style="width:100%;text-align:center;">
 			CrossFade:  Left<input type="range" oninput="crossFadeTwoSource(this);" value="50" max="100" min="0"></input>Right
+			<br />
+			<button onclick="syncLeftRightAudio()">Sync</button>
 		</div>
 		<hr>
 		<p></p>
@@ -45,9 +49,13 @@
 		LSpeed:
 		<input type="range" oninput="changeSource2Speed(this);" value="1.0" max="2.0" min="0.1" step="0.1"></input>
 		<br />
+
+		Frequency: <input min="0" max="1" step="0.01" value="1" oninput="changeSource2Frequency(this);" type="range">
+		Quality: <input min="0" max="1" step="0.01" value="0" oninput="changeSource2Quality(this);" type="range">	
+		<br />
 		<!-- todo set 1x -->
-		<button onclick="changeSourceMusic(2, this)" value="drums">LMusic - Drums</button>
-		<button onclick="changeSourceMusic(2, this)" value="organ">LMusic - Organ</button>
+		<button onclick="changeSourceMusic(2, this)" value="blueyellow">LMusic - Drums</button>
+		<button onclick="changeSourceMusic(2, this)" value="organ-echo-chords">LMusic - Organ</button>
 		<button onclick="changeSourceMusic(2, this)" value="techno">LMusic - Techno</button>
 
 		
@@ -55,20 +63,16 @@
 		<p></p>
 		source - Other<br />
 
-		<button onclick="toggleLSource3('crowd')">OtherMusic 1 - crowd</button>
-		<button onclick="toggleLSource3('crowd')">OtherMusic 2 - crowd</button>
-		<button onclick="toggleLSource3('crowd')">OtherMusic 3 - crowd</button>
+		<button onclick="toggleLSource3('clapping-crowd')">OtherMusic 1 - crowd</button>
+		<button onclick="toggleLSource3('clapping-crowd')">OtherMusic 2 - crowd</button>
+		<button onclick="toggleLSource3('clapping-crowd')">OtherMusic 3 - crowd</button>
 		<br />
 
 
 
 		<br />
-		
-		<br />
-		<input onclick="FilterSample.toggle();" value="Play/Pause" type="button">
 
-		Filter on: <input checked="false" oninput="FilterSample.toggleFilter(this);" type="checkbox">
-		Frequency: <input min="0" max="1" step="0.01" value="1" oninput="FilterSample.changeFrequency(this);" type="range">
-		Quality: <input min="0" max="1" step="0.01" value="0" oninput="FilterSample.changeQuality(this);" type="range">	
+
+
 	</body>
 </html>
