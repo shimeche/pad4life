@@ -61,15 +61,10 @@ function changeSpeed (element, souce) {
 };
 
 //
-function changeSourceMusic (sid, element) {
-    var s;
-    if (sid==1) {
-        s = lSource;
-    }else if(sid==2) {          
-        s = rSource;
-    }
+function changeSource (s, elementValue) {
+
     if (s) {
-        s.source.buffer = BUFFERS[element.value];
+        s.source.buffer = BUFFERS[elementValue];
     }
 }
 

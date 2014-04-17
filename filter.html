@@ -11,7 +11,8 @@
 	</head>
 	<body>
 		source - Left<br />
-		<input onclick="toggleLSource1('techno');" value="play - LeftMusic" type="button">
+		<input onclick="toggleLSource1();" value="play - LeftMusic" type="button">
+		<input onclick="pauseSource1();" value="pause" type="button">
 		<input onclick="stopSource1();" value="stop" type="button">
 		<br />
 		LVolume:
@@ -20,6 +21,12 @@
 		LSpeed:
 		<input type="range" oninput="changeSource1Speed(this);" value="1.0" max="2.0" min="0.1" step="0.1"></input>
 		<br />
+
+		Filter on: <input checked="false" oninput="FilterSample.toggleFilter(this);" type="checkbox">
+		Frequency: <input min="0" max="1" step="0.01" value="1" oninput="FilterSample.changeFrequency(this);" type="range">
+		Quality: <input min="0" max="1" step="0.01" value="0" oninput="FilterSample.changeQuality(this);" type="range">	
+		<br />
+
 		<!-- todo set 1x -->
 		<button onclick="changeSourceMusic(1, this)" value="drums">LMusic - Drums</button>
 		<button onclick="changeSourceMusic(1, this)" value="organ">LMusic - Organ</button>
@@ -32,7 +39,8 @@
 		<hr>
 		<p></p>
 		source - Right<br />
-		<input onclick="toggleLSource2('drums');" value="play - RightMusic" type="button">
+		<input onclick="toggleLSource2();" value="play - RightMusic" type="button">
+		<input onclick="pauseSource2();" value="pause" type="button">
 		<input onclick="stopSource2();" value="stop" type="button">
 		<br />
 		RVolume:
