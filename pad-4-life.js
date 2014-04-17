@@ -3,6 +3,7 @@
 	var lSource, rSource, gainNode1, OtherMusic;
 	var lPlaying, rPlaying;
 	var lGainValue, rGainValue;
+	var lSpeedValue, rSpeedValue;
 
 
 	function toggleLSource1 (argument) {
@@ -10,8 +11,12 @@
 		if (!lPlaying) {
 			lSource = createSource(BUFFERS[argument]);
 
+			// 如果有預設的設定值
 			if (lGainValue>0)
 				lSource.gainNode.gain.value = lGainValue;
+			if (lSpeedValue>0)
+				lSource.source.playbackRate.value = lSpeedValue;
+
 			lSource.source.start(0);
 			lPlaying = true;
 		}
@@ -27,12 +32,16 @@
 
 	function changeSource1Volume (element) {
 
-		lGainValue = changeSpeed(element, lSource);
+		lGainValue = changeVolume(element, lSource);
 
 	};
 
 
-	
+	function changeSource1Speed (element) {
+
+		lSpeedValue = changeSpeed(element, lSource);
+
+	};
 
 
 	function toggleLSource2 (argument) {
@@ -56,7 +65,15 @@
 
 	function changeSource2Volume (element) {
 
-		rGainValue = changeSpeed(element, rSource);
+		rGainValue = changeVolume(element, rSource);
 		
 	};
+
+
+	function changeSource2Speed (element) {
+
+		rSpeedValue = changeSpeed(element, rSource);
+
+	};
+
 

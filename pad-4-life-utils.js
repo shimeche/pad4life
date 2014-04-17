@@ -1,5 +1,5 @@
 
-
+// 建立音訊來源
 function createSource(buffer) {
     var source = context.createBufferSource();
     var gainNode = context.createGain ? context.createGain() : context.createGainNode();
@@ -21,8 +21,8 @@ function createSource(buffer) {
 }
 
 
-
-function changeSpeed (element, souce) {
+// 調整音量
+function changeVolume (element, souce) {
 	
 	var volume = element.value;
 	var fraction = parseInt(element.value) / parseInt(element.max);
@@ -37,4 +37,22 @@ function changeSpeed (element, souce) {
 	}
 
 	return gv;
+};
+
+//調整速度
+function changeSpeed (element, souce) {
+
+    var volume = element.value;
+    // var fraction = parseInt(element.value) / parseInt(element.max);
+    // Let's use an x*x curve (x-squared) since simple linear (x) does not
+    // sound as good.
+    var sv;
+    // sv = fraction * fraction;
+    sv = volume;
+    console.log(sv);
+    if (souce) {
+        souce.source.playbackRate.value = sv;
+    }
+
+    return sv;
 };
