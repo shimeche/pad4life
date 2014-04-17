@@ -44,6 +44,21 @@
 	};
 
 
+
+	function changeSourceMusic (sid, element) {
+		var s;
+		if (sid==1) {
+			s = lSource;
+		}else if(sid==2) {			
+			s = rSource;
+		}
+		if (s) {
+			s.source.buffer = BUFFERS[element.value];
+		}
+	}
+
+
+
 	function toggleLSource2 (argument) {
 		if (!rPlaying) {
 			rSource = createSource(BUFFERS[argument]);

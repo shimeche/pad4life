@@ -19,9 +19,10 @@
 		LSpeed:
 		<input type="range" oninput="changeSource1Speed(this);" value="1.0" max="2.0" min="0.1" step="0.1"></input>
 		<!-- todo set 1x -->
-		<button onclick="changeMSource('left',1)">LMusic 1</button>
-		<button onclick="changeMSource('left',2)">LMusic 2</button>
-		<button onclick="changeMSource('left',3)">LMusic 3</button>
+		<button onclick="changeSourceMusic(1, this)" value="drums">LMusic 1 - Drums</button>
+		<button onclick="changeSourceMusic(1, this)" value="organ">LMusic 2 - Organ</button>
+		<button onclick="changeSourceMusic(1, this)" value="techno">LMusic 3 - Techno</button>
+		
 
 		<br />
 
@@ -32,9 +33,9 @@
 		LSpeed:
 		<input type="range" oninput="changeSource2Speed(this);" value="1.0" max="2.0" min="0.1" step="0.1"></input>
 		<!-- todo set 1x -->
-		<button onclick="changeMSource('right',1)">RMusic 1</button>
-		<button onclick="changeMSource('right',2)">RMusic 2</button>
-		<button onclick="changeMSource('right',3)">RMusic 3</button>
+		<button onclick="changeSourceMusic(2, this)" value="drums">LMusic 1 - Drums</button>
+		<button onclick="changeSourceMusic(2, this)" value="organ">LMusic 2 - Organ</button>
+		<button onclick="changeSourceMusic(2, this)" value="techno">LMusic 3 - Techno</button>
 
 		<br />
 
