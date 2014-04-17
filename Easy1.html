@@ -1,0 +1,69 @@
+    <!DOCTYPE html>
+        <html>
+                <head>
+                        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                        <title>Music</title>
+                        <script type="text/javascript">
+                                var context = new window.AudioContext();
+
+                                var gainNode = context.createGain();         //建gainNode
+                                gainNode.gain.value = 3;                      //设置gain(音量)
+                                gainNode.connect(context.destination);    //讲gainNode连接到destination
+
+                                 var osc = context.createOscillator();    //创建Oscillator node: osc
+                                osc.type = "triangle";
+                                osc.frequency.value = 440;              
+                                osc.connect(gainNode);                  //连接到gainNode
+                                // osc.start(0);
+
+                                function startS () {
+                                    osc.start(0);
+                                }
+
+                                function upOSC () {
+                                    osc.frequency.value = osc.frequency.value+50;
+                                }
+
+                                function downOSC () {
+                                    osc.frequency.value = osc.frequency.value-50;
+                                }
+                                function upGain () {
+                                    gainNode.gain.value = gainNode.gain.value+0.5;
+                                }
+
+                                function downGain () {
+                                    gainNode.gain.value = gainNode.gain.value-0.5;
+                                }
+
+
+
+function tryExam () {
+    var context = new AudioContext();
+    var tempo = 120;
+    var releaseTime = 50;
+    var secondsPerBeat = 60.0 / tempo;
+
+    var now = context.currentTime;
+    var i = 0, startTime=0, osc = null;
+
+    for(i = 0; i < 4; i++) {
+        startTime = now + (i*secondsPerBeat) ;
+        osc = context.createOscillator();
+        osc.connect(context.destination);
+        osc.start(i);
+        osc.stop(startTime + releaseTime);
+    } 
+}
+
+                        </script>
+                </head>
+                <body>
+                        <p>Hi!</p>
+                        <a onclick="startS()">start</a>
+                        <a onclick="upGain()">gainup</a>
+                        <a onclick="downGain()">gaindown</a>
+                        <a onclick="upOSC()">oscup</a>
+                        <a onclick="downOSC()">oscdown</a>
+                        <a onclick="tryExam()">Exam1</a>
+                </body>
+        </html>
