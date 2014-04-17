@@ -25,13 +25,6 @@ FilterSample.play = function() {
   this.filter = filter;
 };
 
-FilterSample.changeMSource = function(s,element) {
-
-  this.source.stop(0);
-  this.source.buffer = BUFFERS.hihat;
-  // this.source.start(0);
-
-};
 
 FilterSample.stop = function() {
   if (!this.source.stop)

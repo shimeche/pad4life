@@ -4,14 +4,13 @@
 			<script src="init.js"></script>
 			<script src="buffer-loader.js"></script>
 			<script src="filter-sample.js"></script>
-			<script src="volume-sample.js"></script>
 			<script src="pad-4-life.js"></script>
 			<script src="pad-4-life-utils.js"></script>
 
 </script>
 	</head>
 	<body>
-
+		source - Left<br />
 		<input onclick="toggleLSource1('techno');" value="playSource - LeftMusic" type="button">
 		<input onclick="stopSource1();" value="stop" type="button">
 		LVolume:
@@ -23,9 +22,13 @@
 		<button onclick="changeSourceMusic(1, this)" value="organ">LMusic 2 - Organ</button>
 		<button onclick="changeSourceMusic(1, this)" value="techno">LMusic 3 - Techno</button>
 		
+		<p></p>
+		<div style="width:100%;text-align:center;">
+			CrossFade:  Left<input type="range" oninput="crossFadeTwoSource(this);" value="50" max="100" min="0"></input>Right
+		</div>
 
-		<br />
-
+		<p></p>
+		source - Right<br />
 		<input onclick="toggleLSource2('drums');" value="playSource - RightMusic" type="button">
 		<input onclick="stopSource2();" value="stop" type="button">
 		RVolume:
@@ -39,11 +42,12 @@
 
 		<br />
 
+		<p></p>
+		source - Other<br />
 
-
-		<button onclick="changeOSource(1)">OtherMusic 1</button>
-		<button onclick="changeOSource(2)">OtherMusic 2</button>
-		<button onclick="changeOSource(3)">OtherMusic 3</button>
+		<button onclick="toggleLSource3('crowd')">OtherMusic 1 - crowd</button>
+		<button onclick="toggleLSource3('crowd')">OtherMusic 2 - crowd</button>
+		<button onclick="toggleLSource3('crowd')">OtherMusic 3 - crowd</button>
 		<br />
 
 

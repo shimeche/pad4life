@@ -1,9 +1,11 @@
 
 
-	var lSource, rSource, gainNode1, OtherMusic;
+	var lSource, rSource, OtherMusic;
 	var lPlaying, rPlaying;
 	var lGainValue, rGainValue;
 	var lSpeedValue, rSpeedValue;
+
+//control source 2
 
 
 	function toggleLSource1 (argument) {
@@ -22,49 +24,34 @@
 		}
 
 	}
-
 	function stopSource1 (argument) {
 		if (lSource) {
   			lSource.source.stop(0);
   			lPlaying = false;
   		}
 	}
-
 	function changeSource1Volume (element) {
 
 		lGainValue = changeVolume(element, lSource);
 
-	};
-
-
+	}
 	function changeSource1Speed (element) {
 
 		lSpeedValue = changeSpeed(element, lSource);
 
-	};
-
-
-
-	function changeSourceMusic (sid, element) {
-		var s;
-		if (sid==1) {
-			s = lSource;
-		}else if(sid==2) {			
-			s = rSource;
-		}
-		if (s) {
-			s.source.buffer = BUFFERS[element.value];
-		}
 	}
 
 
-
+//control source 2
+	
 	function toggleLSource2 (argument) {
 		if (!rPlaying) {
 			rSource = createSource(BUFFERS[argument]);
 
 			if (rGainValue>0)
 				rSource.gainNode.gain.value = rGainValue;
+			if (rSpeedValue>0)	
+				rSource.source.playbackRate.value = rSpeedValue;
 			rSource.source.start(0);
 			rPlaying = true;
 		}
@@ -92,3 +79,18 @@
 	};
 
 
+//control other source
+
+	function toggleLSource3 (argument) {
+
+		OtherMusic = createSource(BUFFERS[argument], false);
+
+		OtherMusic.source.start(0);
+
+	}
+
+//control two source
+
+	function crossFadeTwoSource (element) {
+		crossfade(element, lSource, rSource);
+	}

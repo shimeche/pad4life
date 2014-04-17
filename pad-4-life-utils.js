@@ -1,11 +1,14 @@
 
 // 建立音訊來源
-function createSource(buffer) {
+function createSource(buffer, _loop) {
+
+    var _loop = _loop==undefined ? true : false;
+
     var source = context.createBufferSource();
     var gainNode = context.createGain ? context.createGain() : context.createGainNode();
     source.buffer = buffer;
     // Turn on looping
-    source.loop = true;
+    source.loop = _loop;
 
     // source.playbackRate.value = 0.2;
 
@@ -55,4 +58,27 @@ function changeSpeed (element, souce) {
     }
 
     return sv;
+};
+
+//
+function changeSourceMusic (sid, element) {
+    var s;
+    if (sid==1) {
+        s = lSource;
+    }else if(sid==2) {          
+        s = rSource;
+    }
+    if (s) {
+        s.source.buffer = BUFFERS[element.value];
+    }
+}
+
+
+function crossfade(element, s1, s2) {
+    var x = parseInt(element.value) / parseInt(element.max);
+    // Use an equal-power crossfading curve:
+    var gain1 = Math.cos(x * 0.5*Math.PI);
+    var gain2 = Math.cos((1.0 - x) * 0.5*Math.PI);
+    s1.gainNode.gain.value = gain1;
+    s2.gainNode.gain.value = gain2;
 };
