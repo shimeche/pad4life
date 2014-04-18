@@ -122,7 +122,7 @@ function createSource(buffer, _loop) {
     source.buffer = buffer;
     // Turn on looping
     source.loop = _loop;
-    
+
     source.connect(gainNode);
 
     var filter = context.createBiquadFilter();
