@@ -12,7 +12,8 @@ var BUFFERS_TO_LOAD = {
   crowd: 'sounds/clapping-crowd.wav',
   drums: 'sounds/blueyellow.wav',
   organ: 'sounds/organ-echo-chords.wav',
-  techno: 'sounds/techno.wav'
+  techno: 'sounds/techno.wav',
+  a01: 'sounds/a01.wav'
 };
 
 // Loads all sound samples into the buffers object.
