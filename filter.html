@@ -6,9 +6,213 @@
 			<script src="pad-4-life.js"></script>
 			<script src="pad-4-life-utils.js"></script>
 
+		    <script src="pointerevents.js"></script>
+
+		    <script src="audio.js"></script>
+		    <script src="trail3_R.js"></script>
+		    <script src="trail3_L.js"></script>
+
+		    <script type="text/javascript">
+
+    
+    
+			var events = [
+			  // base events
+			  'click',
+			  'pointerdown',
+			  'pointerup',
+			  'pointermove',
+			  'pointerover',
+			  'pointerout'
+			];
+
+			  
+			  
+			  
+			  
+			var touches = [];
+			var SCREEN_WIDTH = 500;
+			var SCREEN_HEIGHT = 200;
+
+			var RADIUS = 70;
+
+			var RADIUS_SCALE = 1;
+			var RADIUS_SCALE_MIN = 0.5;
+			var RADIUS_SCALE_MAX = 1;
+
+
+			var mouseX = SCREEN_WIDTH * 0.001;
+			var mouseY = SCREEN_HEIGHT * 0.001;
+
+
+			function onPointerDown(e) {
+			 e.preventDefault();
+			 // appendOutput(e.type + ' [' + e.pointerId + '] ' + e.clientX + ", " + e.clientY );
+
+			 for (var i=0; i<touches.length; i++) {
+			   if (touches[i].pointerId == e.pointerId) {
+			     touches[i].stopSound();
+			     touches.splice(i, 1);
+			   }
+			 }
+
+			 touches.push( new SoundEvent( e ) );
+
+			}
+
+			function onPointerMove(e) {
+			 // Prevent the browser from doing its default thing (scroll, zoom)
+			 e.preventDefault();
+
+			 for (var i=0; i<touches.length; i++) {
+			   if (touches[i].pointerId == e.pointerId) {
+			     // appendOutput(e.type + ' [' + e.pointerId + '] ' + e.clientX + ", " + e.clientY );
+			     touches[i].x = e.clientX;
+			     touches[i].y = e.clientY;
+			     // touches[i].setFilter();
+			     // setFilter(lSource);
+			     if (e.target.id == "box_L") {
+				     changeFrequency((e.clientX%100)/100, lSource);
+				     // changeQuality(0.75, lSource);
+				 }else{
+				     changeFrequency((e.clientX%100)/100, rSource);
+				     // changeQuality(0.75, rSource);
+				 }
+
+			     return;      
+			   }
+			 }
+			} 
+
+			function onPointerUp(e) { 
+			 // Prevent the browser from doing its default thing (scroll, zoom)
+			 e.preventDefault();
+
+			 // appendOutput(e.type + ' [' + e.pointerId + '] ' + e.clientX + ", " + e.clientY );
+
+			 for (var i=0; i<touches.length; i++) {
+			   if (touches[i].pointerId == e.pointerId) {
+			     touches[i].stopSound();
+			     touches.splice(i, 1);
+			     if (e.target.id == "box_L") {
+				     changeFrequency(1, lSource);
+				     // changeQuality(0, lSource);
+				 }else{
+				 	 changeFrequency(1, rSource);
+				     // changeQuality(0, rSource);
+				 }
+
+			     return;      
+			   }
+			 }
+			}
+
+
+			function setScrollPane(box) {
+
+			 var boxDom=document.getElementById(box);;
+			 boxDom.addEventListener( 'pointerdown', onPointerDown, false );
+			 boxDom.addEventListener( 'pointermove', onPointerMove, false );
+			 boxDom.addEventListener( 'pointerup', onPointerUp, false );
+			 boxDom.addEventListener( 'pointerleave', onPointerUp, false );
+			}
+
+
+			function SoundEvent( e ) {
+			   this.pointerId = e.pointerId;
+
+			   this.x = e.clientX;
+			   this.y = e.clientY;
+			   this.initX = this.x;
+			   this.initY = this.y;
+			   // this.playSound();
+			 }
+
+			function setFilter(s) {
+			 	var factor = 1.0 - ((this.y - this.initY) / (document.body.clientHeight - this.initY));
+
+			 	if (factor < 0)
+			 		factor = 0.0;
+			 	if (factor > 1)
+			 		factor = 1.0;
+			 	var value = Math.pow(2, 13 * factor);
+			 	s.filter.frequency.value = value;
+			 	s.filter.Q.value = 40 * Math.min(1.0, Math.max(0.0, ((this.x - this.initX)/(document.body.clientWidth - this.initX))));
+			 }
+
+			 SoundEvent.prototype.setFilter = function() {
+			 	var factor = 1.0 - ((this.y - this.initY) / (document.body.clientHeight - this.initY));
+
+			 	if (factor < 0)
+			 		factor = 0.0;
+			 	if (factor > 1)
+			 		factor = 1.0;
+			 	var value = Math.pow(2, 13 * factor);
+			 	this.filter.frequency.value = value;
+			 	this.filter.Q.value = 40 * Math.min(1.0, Math.max(0.0, ((this.x - this.initX)/(document.body.clientWidth - this.initX))));
+			 }
+
+			 SoundEvent.prototype.playSound = function() {
+			 	var sourceNode = audioContext.createBufferSource();
+			 	sourceNode.buffer = technoBuffer;
+			 	sourceNode.loop = true;
+			 	this.filter = audioContext.createBiquadFilter();
+			 	this.setFilter();
+
+			 	sourceNode.connect( this.filter );
+			 	this.filter.connect( audioContext.destination );
+			 	sourceNode.start(0);
+			 	this.sound = sourceNode;
+			 }
+
+			 SoundEvent.prototype.stopSound = function() {
+			 	if (this.sound)
+			 		this.sound.stop(0);
+			 	this.sound = null;
+			 }
+
+			 function setupAudio() {
+			 	window.AudioContext = window.AudioContext || window.webkitAudioContext;
+			 	audioContext = new AudioContext();
+
+			 	var request = new XMLHttpRequest();
+			 	request.open("GET", "./sounds/a01.wav", true);
+			 	request.responseType = "arraybuffer";
+			 	request.onload = function() {
+			 	  audioContext.decodeAudioData( request.response, function(buffer) { 
+			 	    	technoBuffer = buffer;
+			 	    	appendOutput( "Sound ready." );
+			 	    	alert("Sound ready.");
+			 		} );
+			 	}
+			 	request.send();
+			 }
+			 
+			 
+			 
+			//初始化
+			function init(){
+			//建立面板addEventListener
+			 	setScrollPane("box_R");
+				setScrollPane("box_L");
+				//載入聲音
+				  // setupAudio();
+				//光球UI
+				initTrail_R("box_R");
+				initTrail_L("box_L");
+			}
+
+		    </script>
+
 </script>
 	</head>
-	<body>
+	<body onLoad="init()">
+
+	    <canvas id="box_R" width="500" height="200">
+	    </canvas>
+	    <canvas id="box_L" width="500" height="200">
+	    </canvas>
+		<br />
 		source - Left<br />
 		<input onclick="toggleLSource1('a01');" value="play - LeftMusic" type="button">
 		<input onclick="pauseSource1();" value="pause" type="button">
@@ -71,6 +275,8 @@
 
 
 		<br />
+
+
 
 
 
