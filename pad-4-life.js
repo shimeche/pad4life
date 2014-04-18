@@ -72,10 +72,10 @@
 
 	}
 	function changeSource1Frequency (element) {
-		changeFrequency(element, lSource);
+		changeFrequency(element.value, lSource);
 	}
 	function changeSource1Quality (element) {
-		changeQuality(element, lSource);
+		changeQuality(element.value, lSource);
 	}
 
 
@@ -140,10 +140,10 @@
 
 	}
 	function changeSource2Frequency (element) {
-		changeFrequency(element, rSource);
+		changeFrequency(element.value, rSource);
 	}
 	function changeSource2Quality (element) {
-		changeQuality(element, rSource);
+		changeQuality(element.value, rSource);
 	}
 
 
@@ -189,6 +189,9 @@
 
 	function syncLeftRightAudio()
 	{
+
+		if ( (!lPlaying) || (!rPlaying) ) return;
+		if ( (rAudio == null ) || (lAudio == null) ) return;
 
 		rAudio.currentTime = lAudio.currentTime;
 

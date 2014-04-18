@@ -85,7 +85,7 @@ function crossfade(element, s1, s2) {
 };
 
 
-function changeFrequency(element, s) {
+function changeFrequency(elementValue, s) {
   // Clamp the frequency between the minimum value (40 Hz) and half of the
   // sampling rate.
   var minValue = 40;
@@ -93,12 +93,17 @@ function changeFrequency(element, s) {
   // Logarithm (base 2) to compute how many octaves fall in the range.
   var numberOfOctaves = Math.log(maxValue / minValue) / Math.LN2;
   // Compute a multiplier from 0 to 1 based on an exponential scale.
-  var multiplier = Math.pow(2, numberOfOctaves * (element.value - 1.0));
+  var multiplier = Math.pow(2, numberOfOctaves * (elementValue - 1.0));
   // Get back to the frequency value between min and max.
   s.filter.frequency.value = maxValue * multiplier;
+
+  console.log("freq:" + s.filter.frequency.value);
+  console.log("freq element:" + elementValue);
 };
 
 
-function changeQuality(element,s) {
-  s.filter.Q.value = element.value * 30;
+function changeQuality(elementValue,s) {
+  s.filter.Q.value = elementValue * 30;
+
+  console.log("Qua:" + s.filter.Q.value);
 };
