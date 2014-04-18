@@ -107,3 +107,61 @@ function changeQuality(elementValue,s) {
 
   console.log("Qua:" + s.filter.Q.value);
 };
+
+
+
+
+
+// 建立音訊來源
+function createSource(buffer, _loop) {
+
+    var _loop = _loop==undefined ? true : false;
+
+    var source = context.createBufferSource();
+    var gainNode = context.createGain ? context.createGain() : context.createGainNode();
+    source.buffer = buffer;
+    // Turn on looping
+    source.loop = _loop;
+    
+    source.connect(gainNode);
+
+    var filter = context.createBiquadFilter();
+    filter.type = 0; // LOWPASS
+    filter.frequency.value = 5000;
+    // Connect source to filter, filter to destination.
+    gainNode.connect(filter);
+    filter.connect(context.destination);
+
+    return {
+      source: source,
+      gainNode: gainNode,
+      filter:filter
+    };
+}
+
+
+function changeSpeed (element, souce) {
+
+    var volume = element.value;
+    // var fraction = parseInt(element.value) / parseInt(element.max);
+    // Let's use an x*x curve (x-squared) since simple linear (x) does not
+    // sound as good.
+    var sv;
+    // sv = fraction * fraction;
+    sv = volume;
+    console.log(sv);
+    if (souce) {
+        souce.source.playbackRate.value = sv;
+    }
+
+    return sv;
+};
+
+
+//
+function changeSource (s, elementValue) {
+
+    if (s) {
+        s.source.buffer = BUFFERS[elementValue];
+    }
+}

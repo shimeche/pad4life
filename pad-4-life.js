@@ -10,7 +10,42 @@
 	lSourcePaused, rSourcePaused;
 	var lAudio = new Audio(), rAudio = new Audio(), oAudio = new Audio();
 
+	function toggleLOldSource1 (argument) {
 
+		if (argument) {
+
+			lSourceBufferName = argument;
+
+		}else if (!lSourceBufferName) {
+
+			lSourceBufferName = 'techno';
+
+		}
+
+		if (!lPlaying) {
+			lSource = createSource(BUFFERS[lSourceBufferName]);
+
+			// 如果有預設的設定值
+			if (lGainValue>0)
+				lSource.gainNode.gain.value = lGainValue;
+			if (lSpeedValue>0)
+				lSource.source.playbackRate.value = lSpeedValue;
+
+			lSourcePaused = false;
+
+		    if (lSourcePauseAt) {
+				lSourceStartAt = Date.now() - lSourcePauseAt;
+				lSource.source.start(0, lSourcePauseAt / 1000);
+		    }
+		    else {
+				lSourceStartAt = Date.now();
+				lSource.source.start(0);
+		    }
+
+			lPlaying = true;
+		}
+
+	}
 
 
 	function toggleLSource1 (argument) {
@@ -67,8 +102,8 @@
 	}
 	function changeSource1Speed (element) {
 
-		// lSpeedValue = changeSpeed(element, lSource);
-		lSpeedValue = changeAudioSpeed(element, lAudio);
+		lSpeedValue = changeSpeed(element, lSource);
+		//lSpeedValue = changeAudioSpeed(element, lAudio);
 
 	}
 	function changeSource1Frequency (element) {
